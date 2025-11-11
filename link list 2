@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Student {
+    char name[20];
+    int rollno;
+    int age;
+} Student;
+
+typedef struct Node {
+    Student data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
+
+Node* createNode(char name[], int rollno, int age) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    strcpy(newNode->data.name, name);
+    newNode->data.rollno = rollno;
+    newNode->data.age = age;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void displayList(Node* head) {
+    Node* temp = head;
+    printf("\nDoubly Linked List Structure:\n");
+    printf("-----------------------------------------------------------------------------------------\n");
+    printf("| %-14s | %-14s | %-15s | %-10s | %-5s | %-14s |\n", "Node Addr", "Prev Addr", "Name", "Roll No", "Age", "Next Addr");
+    printf("-----------------------------------------------------------------------------------------\n");
+    while (temp != NULL) {
+        printf("| %-14p | %-14p | %-15s | %-10d | %-5d | %-14p |\n",
+               (void*)temp,
+               (void*)temp->prev,
+               temp->data.name,
+               temp->data.rollno,
+               temp->data.age,
+               (void*)temp->next);
+        temp = temp->next;
+    }
+    printf("-----------------------------------------------------------------------------------------\n");
+}
+
+int main() {
+    Node* N1 = createNode("aaa", 101, 20);
+    Node* N2 = createNode("bbb", 102, 21);
+    Node* N3 = createNode("ccc", 103, 19);
+    Node* N4 = createNode("ddd", 104, 22);
+    Node* N5 = createNode("eee", 105, 20);
+
+    N1->next = N2;
+    N2->prev = N1;
+    N2->next = N3;
+    N3->prev = N2;
+    N3->next = N4;
+    N4->prev = N3;
+    N4->next = N5;
+    N5->prev = N4;
+
+    displayList(N1);
+
+    free(N1);
+    free(N2);
+    free(N3);
+    free(N4);
+    free(N5);
+
+    return 0;
+}
